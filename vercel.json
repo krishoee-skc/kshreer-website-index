@@ -1,6 +1,6 @@
 {
   "buildCommand": "next build",
-  "installCommand": "pnpm install",
+  "installCommand": "pnpm install --frozen-lockfile",
   "devCommand": "next dev",
   "env": {
     "NODE_ENV": "production"
