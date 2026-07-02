@@ -1,0 +1,8 @@
+{
+  "buildCommand": "next build",
+  "installCommand": "pnpm install",
+  "devCommand": "next dev",
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
