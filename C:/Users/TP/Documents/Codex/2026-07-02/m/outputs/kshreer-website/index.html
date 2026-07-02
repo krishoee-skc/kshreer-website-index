@@ -318,6 +318,7 @@
           <button data-tab="sales" class="tab-btn rounded-full px-5 py-2.5 text-sm font-medium border border-sand transition-colors">Sales Register</button>
           <button data-tab="materials" class="tab-btn rounded-full px-5 py-2.5 text-sm font-medium border border-sand transition-colors">Raw Materials</button>
           <button data-tab="goods" class="tab-btn rounded-full px-5 py-2.5 text-sm font-medium border border-sand transition-colors">Finished Goods</button>
+          <button data-tab="qr" class="tab-btn rounded-full px-5 py-2.5 text-sm font-medium border border-sand transition-colors">QR Generator</button>
         </div>
 
         <!-- Panel: Customer Ledger -->
@@ -532,6 +533,35 @@
                 </table>
                 <p id="goodEmpty" class="px-6 py-8 text-center text-slate">No movements yet.</p>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel: QR Generator -->
+        <div data-panel="qr" class="tab-panel mt-8 grid gap-8 lg:grid-cols-3 hidden">
+          <form id="qrForm" class="lg:col-span-1 rounded-2xl bg-white border border-sand p-8 space-y-4 h-fit">
+            <div>
+              <label for="qrText" class="block text-sm font-medium mb-1">Text or link</label>
+              <textarea id="qrText" rows="3" required placeholder="https://kshreer.com or any text" class="w-full rounded-lg border border-sand bg-cream px-4 py-2.5 text-sm focus:outline-none focus:border-gold resize-y"></textarea>
+            </div>
+            <div>
+              <label for="qrSize" class="block text-sm font-medium mb-1">Size</label>
+              <select id="qrSize" class="w-full rounded-lg border border-sand bg-cream px-4 py-2.5 text-sm focus:outline-none focus:border-gold">
+                <option value="200">Small (200px)</option>
+                <option value="300" selected>Medium (300px)</option>
+                <option value="500">Large (500px)</option>
+              </select>
+            </div>
+            <button type="submit" class="w-full rounded-full bg-ink px-6 py-3 text-sm font-medium text-cream hover:bg-gold transition-colors">Generate QR</button>
+          </form>
+          <div class="lg:col-span-2 rounded-2xl bg-white border border-sand p-8 flex flex-col items-center justify-center text-center min-h-[320px]">
+            <div id="qrPlaceholder" class="text-slate">
+              <p class="font-serif text-xl font-semibold text-ink">Your QR code appears here</p>
+              <p class="mt-2 text-sm">Enter a link or text and click Generate.</p>
+            </div>
+            <div id="qrResult" class="hidden flex flex-col items-center gap-4">
+              <img id="qrImage" alt="Generated QR code" class="rounded-lg border border-sand bg-white p-3" crossorigin="anonymous" />
+              <a id="qrDownload" href="#" download="kshreer-qr.png" class="inline-flex rounded-full border border-sand px-6 py-3 text-sm font-medium text-ink hover:border-ink transition-colors">Download PNG</a>
             </div>
           </div>
         </div>
@@ -848,6 +878,27 @@
       clearBtn: 'clearGoods', addAction: 'produce',
       actionLabels: { produce: 'Produce', sell: 'Sell / dispatch' },
     });
+
+    // QR Generator (free QR image API)
+    (function () {
+      const form = document.getElementById('qrForm');
+      const img = document.getElementById('qrImage');
+      const result = document.getElementById('qrResult');
+      const placeholder = document.getElementById('qrPlaceholder');
+      const download = document.getElementById('qrDownload');
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const text = document.getElementById('qrText').value.trim();
+        if (!text) return;
+        const size = document.getElementById('qrSize').value;
+        const url = 'https://api.qrserver.com/v1/create-qr-code/?size=' + size + 'x' + size + '&data=' + encodeURIComponent(text);
+        img.src = url;
+        img.width = size; img.height = size;
+        download.href = url;
+        placeholder.classList.add('hidden');
+        result.classList.remove('hidden');
+      });
+    })();
   </script>
 </body>
 </html>
