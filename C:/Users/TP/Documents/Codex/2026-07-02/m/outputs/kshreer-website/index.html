@@ -45,7 +45,7 @@
         <li><a href="#products" class="hover:text-ink transition-colors">Products</a></li>
         <li><a href="#process" class="hover:text-ink transition-colors">Process</a></li>
         <li><a href="#work" class="hover:text-ink transition-colors">Work</a></li>
-        <li><a href="#ledger" class="hover:text-ink transition-colors">Ledger</a></li>
+        <li><a href="#books" class="hover:text-ink transition-colors">Books</a></li>
         <li><a href="#contact" class="hover:text-ink transition-colors">Contact</a></li>
       </ul>
       <a href="#contact" class="hidden md:inline-flex items-center rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-cream hover:bg-gold transition-colors">Start a project</a>
@@ -59,7 +59,7 @@
         <li><a href="#products" class="block hover:text-ink">Products</a></li>
         <li><a href="#process" class="block hover:text-ink">Process</a></li>
         <li><a href="#work" class="block hover:text-ink">Work</a></li>
-        <li><a href="#ledger" class="block hover:text-ink">Ledger</a></li>
+        <li><a href="#books" class="block hover:text-ink">Books</a></li>
         <li><a href="#contact" class="block hover:text-ink">Contact</a></li>
       </ul>
     </div>
@@ -303,18 +303,26 @@
       </div>
     </section>
 
-    <!-- Customer Ledger -->
-    <section id="ledger" class="py-24">
+    <!-- Books: Ledger / Sales / Materials / Finished Goods -->
+    <section id="books" class="py-24">
       <div class="max-w-6xl mx-auto px-6">
         <div class="max-w-2xl fade-up">
-          <span class="text-xs font-semibold uppercase tracking-[0.2em] text-gold">Customer ledger</span>
-          <h2 class="mt-4 font-serif text-3xl md:text-4xl font-semibold text-balance">Track customers and balances at a glance.</h2>
-          <p class="mt-4 text-slate leading-relaxed text-pretty">A lightweight ledger for logging customer transactions. Entries are saved in your browser.</p>
+          <span class="text-xs font-semibold uppercase tracking-[0.2em] text-gold">Books &amp; inventory</span>
+          <h2 class="mt-4 font-serif text-3xl md:text-4xl font-semibold text-balance">Run your daily books in one place.</h2>
+          <p class="mt-4 text-slate leading-relaxed text-pretty">Track customer balances, sales by payment mode, raw material stock, and finished goods. Everything is saved in your browser.</p>
         </div>
 
-        <div class="mt-12 grid gap-8 lg:grid-cols-3">
-          <!-- Entry form -->
-          <form id="ledgerForm" class="fade-up lg:col-span-1 rounded-2xl bg-white border border-sand p-8 space-y-4 h-fit">
+        <!-- Tabs -->
+        <div class="mt-10 flex flex-wrap gap-2 fade-up" role="tablist">
+          <button data-tab="ledger" class="tab-btn rounded-full px-5 py-2.5 text-sm font-medium border border-sand transition-colors">Customer Ledger</button>
+          <button data-tab="sales" class="tab-btn rounded-full px-5 py-2.5 text-sm font-medium border border-sand transition-colors">Sales Register</button>
+          <button data-tab="materials" class="tab-btn rounded-full px-5 py-2.5 text-sm font-medium border border-sand transition-colors">Raw Materials</button>
+          <button data-tab="goods" class="tab-btn rounded-full px-5 py-2.5 text-sm font-medium border border-sand transition-colors">Finished Goods</button>
+        </div>
+
+        <!-- Panel: Customer Ledger -->
+        <div data-panel="ledger" class="tab-panel mt-8 grid gap-8 lg:grid-cols-3">
+          <form id="ledgerForm" class="lg:col-span-1 rounded-2xl bg-white border border-sand p-8 space-y-4 h-fit">
             <div>
               <label for="custName" class="block text-sm font-medium mb-1">Customer name</label>
               <input id="custName" type="text" required placeholder="Acme Co." class="w-full rounded-lg border border-sand bg-cream px-4 py-2.5 text-sm focus:outline-none focus:border-gold" />
@@ -340,40 +348,190 @@
             </div>
             <button type="submit" class="w-full rounded-full bg-ink px-6 py-3 text-sm font-medium text-cream hover:bg-gold transition-colors">Add entry</button>
           </form>
-
-          <!-- Ledger table -->
-          <div class="fade-up lg:col-span-2 rounded-2xl bg-white border border-sand overflow-hidden">
+          <div class="lg:col-span-2 rounded-2xl bg-white border border-sand overflow-hidden">
             <div class="flex flex-wrap items-center justify-between gap-4 border-b border-sand px-6 py-4">
               <div class="flex flex-wrap gap-6">
-                <div>
-                  <div class="text-xs uppercase tracking-wider text-slate">Total charged</div>
-                  <div id="totalDebit" class="mt-0.5 font-serif text-xl font-semibold">$0.00</div>
-                </div>
-                <div>
-                  <div class="text-xs uppercase tracking-wider text-slate">Total paid</div>
-                  <div id="totalCredit" class="mt-0.5 font-serif text-xl font-semibold">$0.00</div>
-                </div>
-                <div>
-                  <div class="text-xs uppercase tracking-wider text-slate">Balance due</div>
-                  <div id="totalBalance" class="mt-0.5 font-serif text-xl font-semibold text-gold">$0.00</div>
-                </div>
+                <div><div class="text-xs uppercase tracking-wider text-slate">Total charged</div><div id="totalDebit" class="mt-0.5 font-serif text-xl font-semibold">$0.00</div></div>
+                <div><div class="text-xs uppercase tracking-wider text-slate">Total paid</div><div id="totalCredit" class="mt-0.5 font-serif text-xl font-semibold">$0.00</div></div>
+                <div><div class="text-xs uppercase tracking-wider text-slate">Balance due</div><div id="totalBalance" class="mt-0.5 font-serif text-xl font-semibold text-gold">$0.00</div></div>
               </div>
               <button id="clearLedger" class="text-sm font-medium text-slate hover:text-ink underline underline-offset-4 decoration-gold">Clear all</button>
             </div>
             <div class="overflow-x-auto">
               <table class="w-full text-sm">
-                <thead>
-                  <tr class="text-left text-slate border-b border-sand">
-                    <th class="px-6 py-3 font-medium">Date</th>
-                    <th class="px-6 py-3 font-medium">Customer</th>
-                    <th class="px-6 py-3 font-medium">Note</th>
-                    <th class="px-6 py-3 font-medium text-right">Amount</th>
-                    <th class="px-6 py-3 font-medium"><span class="sr-only">Actions</span></th>
-                  </tr>
-                </thead>
+                <thead><tr class="text-left text-slate border-b border-sand">
+                  <th class="px-6 py-3 font-medium">Date</th><th class="px-6 py-3 font-medium">Customer</th><th class="px-6 py-3 font-medium">Note</th><th class="px-6 py-3 font-medium text-right">Amount</th><th class="px-6 py-3 font-medium"><span class="sr-only">Actions</span></th>
+                </tr></thead>
                 <tbody id="ledgerBody"></tbody>
               </table>
               <p id="ledgerEmpty" class="px-6 py-12 text-center text-slate">No entries yet. Add your first transaction to get started.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel: Sales Register -->
+        <div data-panel="sales" class="tab-panel mt-8 grid gap-8 lg:grid-cols-3 hidden">
+          <form id="salesForm" class="lg:col-span-1 rounded-2xl bg-white border border-sand p-8 space-y-4 h-fit">
+            <div>
+              <label for="saleDate" class="block text-sm font-medium mb-1">Date</label>
+              <input id="saleDate" type="date" required class="w-full rounded-lg border border-sand bg-cream px-4 py-2.5 text-sm focus:outline-none focus:border-gold" />
+            </div>
+            <div>
+              <label for="saleCust" class="block text-sm font-medium mb-1">Customer</label>
+              <input id="saleCust" type="text" required placeholder="Walk-in / Acme Co." class="w-full rounded-lg border border-sand bg-cream px-4 py-2.5 text-sm focus:outline-none focus:border-gold" />
+            </div>
+            <div>
+              <label for="saleItem" class="block text-sm font-medium mb-1">Item <span class="text-slate font-normal">(optional)</span></label>
+              <input id="saleItem" type="text" placeholder="Product / service" class="w-full rounded-lg border border-sand bg-cream px-4 py-2.5 text-sm focus:outline-none focus:border-gold" />
+            </div>
+            <div>
+              <label for="saleAmount" class="block text-sm font-medium mb-1">Amount</label>
+              <input id="saleAmount" type="number" min="0" step="0.01" required placeholder="0.00" class="w-full rounded-lg border border-sand bg-cream px-4 py-2.5 text-sm focus:outline-none focus:border-gold" />
+            </div>
+            <div>
+              <label for="saleMode" class="block text-sm font-medium mb-1">Payment mode</label>
+              <select id="saleMode" class="w-full rounded-lg border border-sand bg-cream px-4 py-2.5 text-sm focus:outline-none focus:border-gold">
+                <option value="cash">Cash</option>
+                <option value="cheque">Cheque</option>
+                <option value="credit">Credit (unpaid)</option>
+              </select>
+            </div>
+            <button type="submit" class="w-full rounded-full bg-ink px-6 py-3 text-sm font-medium text-cream hover:bg-gold transition-colors">Record sale</button>
+          </form>
+          <div class="lg:col-span-2 rounded-2xl bg-white border border-sand overflow-hidden">
+            <div class="flex flex-wrap items-center justify-between gap-4 border-b border-sand px-6 py-4">
+              <div class="flex flex-wrap gap-6">
+                <div><div class="text-xs uppercase tracking-wider text-slate">Total sales</div><div id="salesTotal" class="mt-0.5 font-serif text-xl font-semibold">$0.00</div></div>
+                <div><div class="text-xs uppercase tracking-wider text-slate">Cash</div><div id="salesCash" class="mt-0.5 font-serif text-xl font-semibold">$0.00</div></div>
+                <div><div class="text-xs uppercase tracking-wider text-slate">Cheque</div><div id="salesCheque" class="mt-0.5 font-serif text-xl font-semibold">$0.00</div></div>
+                <div><div class="text-xs uppercase tracking-wider text-slate">Credit</div><div id="salesCredit" class="mt-0.5 font-serif text-xl font-semibold text-gold">$0.00</div></div>
+              </div>
+              <button id="clearSales" class="text-sm font-medium text-slate hover:text-ink underline underline-offset-4 decoration-gold">Clear all</button>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead><tr class="text-left text-slate border-b border-sand">
+                  <th class="px-6 py-3 font-medium">Date</th><th class="px-6 py-3 font-medium">Customer</th><th class="px-6 py-3 font-medium">Item</th><th class="px-6 py-3 font-medium">Mode</th><th class="px-6 py-3 font-medium text-right">Amount</th><th class="px-6 py-3 font-medium"><span class="sr-only">Actions</span></th>
+                </tr></thead>
+                <tbody id="salesBody"></tbody>
+              </table>
+              <p id="salesEmpty" class="px-6 py-12 text-center text-slate">No sales recorded yet.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel: Raw Materials -->
+        <div data-panel="materials" class="tab-panel mt-8 grid gap-8 lg:grid-cols-3 hidden">
+          <form id="matForm" class="lg:col-span-1 rounded-2xl bg-white border border-sand p-8 space-y-4 h-fit">
+            <div>
+              <label for="matDate" class="block text-sm font-medium mb-1">Date</label>
+              <input id="matDate" type="date" required class="w-full rounded-lg border border-sand bg-cream px-4 py-2.5 text-sm focus:outline-none focus:border-gold" />
+            </div>
+            <div>
+              <label for="matName" class="block text-sm font-medium mb-1">Material</label>
+              <input id="matName" type="text" required placeholder="Steel sheet" class="w-full rounded-lg border border-sand bg-cream px-4 py-2.5 text-sm focus:outline-none focus:border-gold" />
+            </div>
+            <div>
+              <label for="matAction" class="block text-sm font-medium mb-1">Action</label>
+              <select id="matAction" class="w-full rounded-lg border border-sand bg-cream px-4 py-2.5 text-sm focus:outline-none focus:border-gold">
+                <option value="purchase">Purchase (add stock)</option>
+                <option value="consume">Consume (use stock)</option>
+              </select>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label for="matQty" class="block text-sm font-medium mb-1">Quantity</label>
+                <input id="matQty" type="number" min="0" step="any" required placeholder="0" class="w-full rounded-lg border border-sand bg-cream px-4 py-2.5 text-sm focus:outline-none focus:border-gold" />
+              </div>
+              <div>
+                <label for="matUnit" class="block text-sm font-medium mb-1">Unit</label>
+                <input id="matUnit" type="text" placeholder="kg / pcs" class="w-full rounded-lg border border-sand bg-cream px-4 py-2.5 text-sm focus:outline-none focus:border-gold" />
+              </div>
+            </div>
+            <button type="submit" class="w-full rounded-full bg-ink px-6 py-3 text-sm font-medium text-cream hover:bg-gold transition-colors">Add movement</button>
+          </form>
+          <div class="lg:col-span-2 space-y-8">
+            <div class="rounded-2xl bg-white border border-sand overflow-hidden">
+              <div class="flex items-center justify-between border-b border-sand px-6 py-4">
+                <h3 class="font-serif text-lg font-semibold">Current stock</h3>
+                <button id="clearMat" class="text-sm font-medium text-slate hover:text-ink underline underline-offset-4 decoration-gold">Clear all</button>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead><tr class="text-left text-slate border-b border-sand">
+                    <th class="px-6 py-3 font-medium">Material</th><th class="px-6 py-3 font-medium text-right">In stock</th>
+                  </tr></thead>
+                  <tbody id="matStockBody"></tbody>
+                </table>
+                <p id="matStockEmpty" class="px-6 py-8 text-center text-slate">No materials tracked yet.</p>
+              </div>
+            </div>
+            <div class="rounded-2xl bg-white border border-sand overflow-hidden">
+              <div class="border-b border-sand px-6 py-4"><h3 class="font-serif text-lg font-semibold">Movement history</h3></div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead><tr class="text-left text-slate border-b border-sand">
+                    <th class="px-6 py-3 font-medium">Date</th><th class="px-6 py-3 font-medium">Material</th><th class="px-6 py-3 font-medium">Action</th><th class="px-6 py-3 font-medium text-right">Qty</th><th class="px-6 py-3 font-medium"><span class="sr-only">Actions</span></th>
+                  </tr></thead>
+                  <tbody id="matBody"></tbody>
+                </table>
+                <p id="matEmpty" class="px-6 py-8 text-center text-slate">No movements yet.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel: Finished Goods -->
+        <div data-panel="goods" class="tab-panel mt-8 grid gap-8 lg:grid-cols-3 hidden">
+          <form id="goodsForm" class="lg:col-span-1 rounded-2xl bg-white border border-sand p-8 space-y-4 h-fit">
+            <div>
+              <label for="goodDate" class="block text-sm font-medium mb-1">Date</label>
+              <input id="goodDate" type="date" required class="w-full rounded-lg border border-sand bg-cream px-4 py-2.5 text-sm focus:outline-none focus:border-gold" />
+            </div>
+            <div>
+              <label for="goodName" class="block text-sm font-medium mb-1">Product / item</label>
+              <input id="goodName" type="text" required placeholder="Widget A" class="w-full rounded-lg border border-sand bg-cream px-4 py-2.5 text-sm focus:outline-none focus:border-gold" />
+            </div>
+            <div>
+              <label for="goodAction" class="block text-sm font-medium mb-1">Action</label>
+              <select id="goodAction" class="w-full rounded-lg border border-sand bg-cream px-4 py-2.5 text-sm focus:outline-none focus:border-gold">
+                <option value="produce">Produce (add stock)</option>
+                <option value="sell">Sell / dispatch (remove stock)</option>
+              </select>
+            </div>
+            <div>
+              <label for="goodQty" class="block text-sm font-medium mb-1">Quantity</label>
+              <input id="goodQty" type="number" min="0" step="any" required placeholder="0" class="w-full rounded-lg border border-sand bg-cream px-4 py-2.5 text-sm focus:outline-none focus:border-gold" />
+            </div>
+            <button type="submit" class="w-full rounded-full bg-ink px-6 py-3 text-sm font-medium text-cream hover:bg-gold transition-colors">Add movement</button>
+          </form>
+          <div class="lg:col-span-2 space-y-8">
+            <div class="rounded-2xl bg-white border border-sand overflow-hidden">
+              <div class="flex items-center justify-between border-b border-sand px-6 py-4">
+                <h3 class="font-serif text-lg font-semibold">Finished goods in stock</h3>
+                <button id="clearGoods" class="text-sm font-medium text-slate hover:text-ink underline underline-offset-4 decoration-gold">Clear all</button>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead><tr class="text-left text-slate border-b border-sand">
+                    <th class="px-6 py-3 font-medium">Product</th><th class="px-6 py-3 font-medium text-right">In stock</th>
+                  </tr></thead>
+                  <tbody id="goodStockBody"></tbody>
+                </table>
+                <p id="goodStockEmpty" class="px-6 py-8 text-center text-slate">No finished goods tracked yet.</p>
+              </div>
+            </div>
+            <div class="rounded-2xl bg-white border border-sand overflow-hidden">
+              <div class="border-b border-sand px-6 py-4"><h3 class="font-serif text-lg font-semibold">Production &amp; dispatch history</h3></div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead><tr class="text-left text-slate border-b border-sand">
+                    <th class="px-6 py-3 font-medium">Date</th><th class="px-6 py-3 font-medium">Product</th><th class="px-6 py-3 font-medium">Action</th><th class="px-6 py-3 font-medium text-right">Qty</th><th class="px-6 py-3 font-medium"><span class="sr-only">Actions</span></th>
+                  </tr></thead>
+                  <tbody id="goodBody"></tbody>
+                </table>
+                <p id="goodEmpty" class="px-6 py-8 text-center text-slate">No movements yet.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -406,7 +564,7 @@
         <li><a href="#products" class="hover:text-ink transition-colors">Products</a></li>
         <li><a href="#process" class="hover:text-ink transition-colors">Process</a></li>
         <li><a href="#work" class="hover:text-ink transition-colors">Work</a></li>
-        <li><a href="#ledger" class="hover:text-ink transition-colors">Ledger</a></li>
+        <li><a href="#books" class="hover:text-ink transition-colors">Books</a></li>
         <li><a href="#contact" class="hover:text-ink transition-colors">Contact</a></li>
       </ul>
       <p class="text-sm text-slate">© 2026 Kshreer. All rights reserved.</p>
@@ -514,6 +672,182 @@
 
       render();
     })();
+
+    // Shared helpers
+    function esc(str) {
+      return String(str || '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+    function money(n) { return '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+    function qty(n) { return Number(n).toLocaleString('en-US', { maximumFractionDigits: 3 }); }
+    function today() { return new Date().toISOString().slice(0, 10); }
+
+    // Tabs
+    (function () {
+      const btns = document.querySelectorAll('.tab-btn');
+      const panels = document.querySelectorAll('.tab-panel');
+      const ACTIVE = ['bg-ink', 'text-cream', 'border-ink'];
+      const INACTIVE = ['text-slate', 'hover:text-ink', 'hover:border-ink'];
+      function activate(name) {
+        btns.forEach((b) => {
+          const on = b.dataset.tab === name;
+          b.classList.toggle('bg-ink', on);
+          b.classList.toggle('text-cream', on);
+          b.classList.toggle('border-ink', on);
+          b.classList.toggle('text-slate', !on);
+          b.classList.toggle('hover:text-ink', !on);
+        });
+        panels.forEach((p) => p.classList.toggle('hidden', p.dataset.panel !== name));
+      }
+      btns.forEach((b) => b.addEventListener('click', () => activate(b.dataset.tab)));
+      activate('ledger');
+    })();
+
+    // Sales Register (localStorage)
+    (function () {
+      const KEY = 'kshreer_sales';
+      const form = document.getElementById('salesForm');
+      const body = document.getElementById('salesBody');
+      const empty = document.getElementById('salesEmpty');
+      const dateInput = document.getElementById('saleDate');
+      dateInput.value = today();
+      let items = [];
+      try { items = JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { items = []; }
+      const save = () => localStorage.setItem(KEY, JSON.stringify(items));
+      const modeLabel = { cash: 'Cash', cheque: 'Cheque', credit: 'Credit' };
+
+      function render() {
+        body.innerHTML = '';
+        let total = 0, cash = 0, cheque = 0, credit = 0;
+        empty.classList.toggle('hidden', items.length > 0);
+        items.forEach((s) => {
+          total += s.amount;
+          if (s.mode === 'cash') cash += s.amount; else if (s.mode === 'cheque') cheque += s.amount; else credit += s.amount;
+          const tr = document.createElement('tr');
+          tr.className = 'border-b border-sand last:border-0';
+          tr.innerHTML =
+            '<td class="px-6 py-3 whitespace-nowrap text-slate">' + s.date + '</td>' +
+            '<td class="px-6 py-3 font-medium">' + esc(s.customer) + '</td>' +
+            '<td class="px-6 py-3 text-slate">' + (esc(s.item) || '—') + '</td>' +
+            '<td class="px-6 py-3">' + modeLabel[s.mode] + '</td>' +
+            '<td class="px-6 py-3 text-right font-medium">' + money(s.amount) + '</td>' +
+            '<td class="px-6 py-3 text-right"><button data-id="' + s.id + '" class="del text-slate hover:text-ink" aria-label="Delete">&times;</button></td>';
+          body.appendChild(tr);
+        });
+        document.getElementById('salesTotal').textContent = money(total);
+        document.getElementById('salesCash').textContent = money(cash);
+        document.getElementById('salesCheque').textContent = money(cheque);
+        document.getElementById('salesCredit').textContent = money(credit);
+      }
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        items.unshift({
+          id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+          date: document.getElementById('saleDate').value,
+          customer: document.getElementById('saleCust').value.trim(),
+          item: document.getElementById('saleItem').value.trim(),
+          amount: parseFloat(document.getElementById('saleAmount').value) || 0,
+          mode: document.getElementById('saleMode').value,
+        });
+        save(); render(); form.reset(); dateInput.value = today();
+      });
+      body.addEventListener('click', (e) => {
+        const btn = e.target.closest('.del'); if (!btn) return;
+        items = items.filter((s) => s.id !== btn.dataset.id); save(); render();
+      });
+      document.getElementById('clearSales').addEventListener('click', () => {
+        if (items.length && confirm('Clear all sales?')) { items = []; save(); render(); }
+      });
+      render();
+    })();
+
+    // Inventory module factory (raw materials & finished goods)
+    function inventoryModule(cfg) {
+      const form = document.getElementById(cfg.form);
+      const histBody = document.getElementById(cfg.histBody);
+      const histEmpty = document.getElementById(cfg.histEmpty);
+      const stockBody = document.getElementById(cfg.stockBody);
+      const stockEmpty = document.getElementById(cfg.stockEmpty);
+      const dateInput = document.getElementById(cfg.dateField);
+      dateInput.value = today();
+      let items = [];
+      try { items = JSON.parse(localStorage.getItem(cfg.key)) || []; } catch (e) { items = []; }
+      const save = () => localStorage.setItem(cfg.key, JSON.stringify(items));
+
+      function render() {
+        // History
+        histBody.innerHTML = '';
+        histEmpty.classList.toggle('hidden', items.length > 0);
+        items.forEach((m) => {
+          const add = m.action === cfg.addAction;
+          const tr = document.createElement('tr');
+          tr.className = 'border-b border-sand last:border-0';
+          tr.innerHTML =
+            '<td class="px-6 py-3 whitespace-nowrap text-slate">' + m.date + '</td>' +
+            '<td class="px-6 py-3 font-medium">' + esc(m.name) + '</td>' +
+            '<td class="px-6 py-3">' + cfg.actionLabels[m.action] + '</td>' +
+            '<td class="px-6 py-3 text-right font-medium ' + (add ? 'text-ink' : 'text-gold') + '">' + (add ? '+' : '−') + qty(m.qty) + (m.unit ? ' ' + esc(m.unit) : '') + '</td>' +
+            '<td class="px-6 py-3 text-right"><button data-id="' + m.id + '" class="del text-slate hover:text-ink" aria-label="Delete">&times;</button></td>';
+          histBody.appendChild(tr);
+        });
+        // Stock summary
+        const stock = {};
+        items.forEach((m) => {
+          const key = m.name + (m.unit ? ' (' + m.unit + ')' : '');
+          const delta = m.action === cfg.addAction ? m.qty : -m.qty;
+          stock[key] = (stock[key] || 0) + delta;
+        });
+        const names = Object.keys(stock).sort();
+        stockBody.innerHTML = '';
+        stockEmpty.classList.toggle('hidden', names.length > 0);
+        names.forEach((n) => {
+          const val = stock[n];
+          const tr = document.createElement('tr');
+          tr.className = 'border-b border-sand last:border-0';
+          tr.innerHTML =
+            '<td class="px-6 py-3 font-medium">' + esc(n) + '</td>' +
+            '<td class="px-6 py-3 text-right font-medium ' + (val < 0 ? 'text-gold' : '') + '">' + qty(val) + '</td>';
+          stockBody.appendChild(tr);
+        });
+      }
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        items.unshift({
+          id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+          date: document.getElementById(cfg.dateField).value,
+          name: document.getElementById(cfg.nameField).value.trim(),
+          action: document.getElementById(cfg.actionField).value,
+          qty: parseFloat(document.getElementById(cfg.qtyField).value) || 0,
+          unit: cfg.unitField ? document.getElementById(cfg.unitField).value.trim() : '',
+        });
+        save(); render(); form.reset(); dateInput.value = today();
+      });
+      histBody.addEventListener('click', (e) => {
+        const btn = e.target.closest('.del'); if (!btn) return;
+        items = items.filter((m) => m.id !== btn.dataset.id); save(); render();
+      });
+      document.getElementById(cfg.clearBtn).addEventListener('click', () => {
+        if (items.length && confirm('Clear all entries?')) { items = []; save(); render(); }
+      });
+      render();
+    }
+
+    inventoryModule({
+      key: 'kshreer_materials', form: 'matForm',
+      histBody: 'matBody', histEmpty: 'matEmpty', stockBody: 'matStockBody', stockEmpty: 'matStockEmpty',
+      dateField: 'matDate', nameField: 'matName', actionField: 'matAction', qtyField: 'matQty', unitField: 'matUnit',
+      clearBtn: 'clearMat', addAction: 'purchase',
+      actionLabels: { purchase: 'Purchase', consume: 'Consume' },
+    });
+
+    inventoryModule({
+      key: 'kshreer_goods', form: 'goodsForm',
+      histBody: 'goodBody', histEmpty: 'goodEmpty', stockBody: 'goodStockBody', stockEmpty: 'goodStockEmpty',
+      dateField: 'goodDate', nameField: 'goodName', actionField: 'goodAction', qtyField: 'goodQty', unitField: null,
+      clearBtn: 'clearGoods', addAction: 'produce',
+      actionLabels: { produce: 'Produce', sell: 'Sell / dispatch' },
+    });
   </script>
 </body>
 </html>
