@@ -318,6 +318,7 @@
           <button data-tab="sales" class="tab-btn rounded-full px-5 py-2.5 text-sm font-medium border border-sand transition-colors">Sales Register</button>
           <button data-tab="materials" class="tab-btn rounded-full px-5 py-2.5 text-sm font-medium border border-sand transition-colors">Raw Materials</button>
           <button data-tab="goods" class="tab-btn rounded-full px-5 py-2.5 text-sm font-medium border border-sand transition-colors">Finished Goods</button>
+          <button data-tab="ops" class="tab-btn rounded-full px-5 py-2.5 text-sm font-medium border border-sand transition-colors">Workers &amp; Machines</button>
           <button data-tab="qr" class="tab-btn rounded-full px-5 py-2.5 text-sm font-medium border border-sand transition-colors">QR Generator</button>
         </div>
 
@@ -532,6 +533,113 @@
                   <tbody id="goodBody"></tbody>
                 </table>
                 <p id="goodEmpty" class="px-6 py-8 text-center text-slate">No movements yet.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel: Workers & Machines -->
+        <div data-panel="ops" class="tab-panel mt-8 hidden">
+          <!-- Summary cards -->
+          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div class="rounded-2xl bg-white border border-sand p-6">
+              <div class="text-xs uppercase tracking-wider text-slate">Workers on shift</div>
+              <div id="opsWorkersOn" class="mt-1 font-serif text-3xl font-semibold">0<span id="opsWorkersTotal" class="text-slate text-lg"> / 0</span></div>
+            </div>
+            <div class="rounded-2xl bg-white border border-sand p-6">
+              <div class="text-xs uppercase tracking-wider text-slate">Machines running</div>
+              <div id="opsMachOn" class="mt-1 font-serif text-3xl font-semibold">0<span id="opsMachTotal" class="text-slate text-lg"> / 0</span></div>
+            </div>
+            <div class="rounded-2xl bg-white border border-sand p-6">
+              <div class="text-xs uppercase tracking-wider text-slate">Machines off</div>
+              <div id="opsMachOff" class="mt-1 font-serif text-3xl font-semibold text-gold">0</div>
+            </div>
+            <div class="rounded-2xl bg-white border border-sand p-6">
+              <div class="text-xs uppercase tracking-wider text-slate">Avg. performance</div>
+              <div id="opsAvgPerf" class="mt-1 font-serif text-3xl font-semibold">—</div>
+            </div>
+          </div>
+
+          <div class="mt-8 grid gap-8 lg:grid-cols-3">
+            <!-- Add machine form -->
+            <form id="machForm" class="lg:col-span-1 rounded-2xl bg-white border border-sand p-8 space-y-4 h-fit">
+              <h3 class="font-serif text-lg font-semibold">Add machine</h3>
+              <div>
+                <label for="machName" class="block text-sm font-medium mb-1">Machine name / ID</label>
+                <input id="machName" type="text" required placeholder="Lathe #1" class="w-full rounded-lg border border-sand bg-cream px-4 py-2.5 text-sm focus:outline-none focus:border-gold" />
+              </div>
+              <div>
+                <label for="machStatus" class="block text-sm font-medium mb-1">Status</label>
+                <select id="machStatus" class="w-full rounded-lg border border-sand bg-cream px-4 py-2.5 text-sm focus:outline-none focus:border-gold">
+                  <option value="on">On</option>
+                  <option value="off">Off</option>
+                </select>
+              </div>
+              <div>
+                <label for="machPerf" class="block text-sm font-medium mb-1">Performance level</label>
+                <select id="machPerf" class="w-full rounded-lg border border-sand bg-cream px-4 py-2.5 text-sm focus:outline-none focus:border-gold">
+                  <option value="best">Best</option>
+                  <option value="good">Good</option>
+                  <option value="low">Low</option>
+                </select>
+              </div>
+              <button type="submit" class="w-full rounded-full bg-ink px-6 py-3 text-sm font-medium text-cream hover:bg-gold transition-colors">Add machine</button>
+            </form>
+
+            <!-- Machines table -->
+            <div class="lg:col-span-2 rounded-2xl bg-white border border-sand overflow-hidden">
+              <div class="flex items-center justify-between border-b border-sand px-6 py-4">
+                <h3 class="font-serif text-lg font-semibold">Machines</h3>
+                <button id="clearMach" class="text-sm font-medium text-slate hover:text-ink underline underline-offset-4 decoration-gold">Clear all</button>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead><tr class="text-left text-slate border-b border-sand">
+                    <th class="px-6 py-3 font-medium">Machine</th><th class="px-6 py-3 font-medium">Status</th><th class="px-6 py-3 font-medium">Performance</th><th class="px-6 py-3 font-medium"><span class="sr-only">Actions</span></th>
+                  </tr></thead>
+                  <tbody id="machBody"></tbody>
+                </table>
+                <p id="machEmpty" class="px-6 py-12 text-center text-slate">No machines added yet.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-8 grid gap-8 lg:grid-cols-3">
+            <!-- Add worker form -->
+            <form id="workerForm" class="lg:col-span-1 rounded-2xl bg-white border border-sand p-8 space-y-4 h-fit">
+              <h3 class="font-serif text-lg font-semibold">Add worker</h3>
+              <div>
+                <label for="workerName" class="block text-sm font-medium mb-1">Worker name</label>
+                <input id="workerName" type="text" required placeholder="Ramesh K." class="w-full rounded-lg border border-sand bg-cream px-4 py-2.5 text-sm focus:outline-none focus:border-gold" />
+              </div>
+              <div>
+                <label for="workerRole" class="block text-sm font-medium mb-1">Role <span class="text-slate font-normal">(optional)</span></label>
+                <input id="workerRole" type="text" placeholder="Operator" class="w-full rounded-lg border border-sand bg-cream px-4 py-2.5 text-sm focus:outline-none focus:border-gold" />
+              </div>
+              <div>
+                <label for="workerShift" class="block text-sm font-medium mb-1">Shift status</label>
+                <select id="workerShift" class="w-full rounded-lg border border-sand bg-cream px-4 py-2.5 text-sm focus:outline-none focus:border-gold">
+                  <option value="on">On shift</option>
+                  <option value="off">Off</option>
+                </select>
+              </div>
+              <button type="submit" class="w-full rounded-full bg-ink px-6 py-3 text-sm font-medium text-cream hover:bg-gold transition-colors">Add worker</button>
+            </form>
+
+            <!-- Workers table -->
+            <div class="lg:col-span-2 rounded-2xl bg-white border border-sand overflow-hidden">
+              <div class="flex items-center justify-between border-b border-sand px-6 py-4">
+                <h3 class="font-serif text-lg font-semibold">Workers</h3>
+                <button id="clearWorkers" class="text-sm font-medium text-slate hover:text-ink underline underline-offset-4 decoration-gold">Clear all</button>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead><tr class="text-left text-slate border-b border-sand">
+                    <th class="px-6 py-3 font-medium">Worker</th><th class="px-6 py-3 font-medium">Role</th><th class="px-6 py-3 font-medium">Shift</th><th class="px-6 py-3 font-medium"><span class="sr-only">Actions</span></th>
+                  </tr></thead>
+                  <tbody id="workerBody"></tbody>
+                </table>
+                <p id="workerEmpty" class="px-6 py-12 text-center text-slate">No workers added yet.</p>
               </div>
             </div>
           </div>
@@ -898,6 +1006,120 @@
         placeholder.classList.add('hidden');
         result.classList.remove('hidden');
       });
+    })();
+
+    // Workers & Machines (localStorage)
+    (function () {
+      const MKEY = 'kshreer_machines';
+      const WKEY = 'kshreer_workers';
+      let machines = [], workers = [];
+      try { machines = JSON.parse(localStorage.getItem(MKEY)) || []; } catch (e) { machines = []; }
+      try { workers = JSON.parse(localStorage.getItem(WKEY)) || []; } catch (e) { workers = []; }
+      const saveM = () => localStorage.setItem(MKEY, JSON.stringify(machines));
+      const saveW = () => localStorage.setItem(WKEY, JSON.stringify(workers));
+
+      const perfLabel = { best: 'Best', good: 'Good', low: 'Low' };
+      const perfClass = { best: 'bg-ink text-cream', good: 'bg-sand text-ink', low: 'bg-gold text-cream' };
+      const perfScore = { best: 3, good: 2, low: 1 };
+
+      function badge(text, cls) {
+        return '<span class="inline-flex rounded-full px-3 py-1 text-xs font-medium ' + cls + '">' + text + '</span>';
+      }
+
+      function renderMachines() {
+        const body = document.getElementById('machBody');
+        const empty = document.getElementById('machEmpty');
+        body.innerHTML = '';
+        empty.classList.toggle('hidden', machines.length > 0);
+        machines.forEach((m) => {
+          const tr = document.createElement('tr');
+          tr.className = 'border-b border-sand last:border-0';
+          const statusBadge = m.status === 'on' ? badge('On', 'bg-ink text-cream') : badge('Off', 'bg-sand text-slate');
+          tr.innerHTML =
+            '<td class="px-6 py-3 font-medium">' + esc(m.name) + '</td>' +
+            '<td class="px-6 py-3">' + statusBadge + '</td>' +
+            '<td class="px-6 py-3">' + badge(perfLabel[m.perf], perfClass[m.perf]) + '</td>' +
+            '<td class="px-6 py-3 text-right"><button data-id="' + m.id + '" class="del text-slate hover:text-ink" aria-label="Delete">&times;</button></td>';
+          body.appendChild(tr);
+        });
+        updateSummary();
+      }
+
+      function renderWorkers() {
+        const body = document.getElementById('workerBody');
+        const empty = document.getElementById('workerEmpty');
+        body.innerHTML = '';
+        empty.classList.toggle('hidden', workers.length > 0);
+        workers.forEach((w) => {
+          const tr = document.createElement('tr');
+          tr.className = 'border-b border-sand last:border-0';
+          const shiftBadge = w.shift === 'on' ? badge('On shift', 'bg-ink text-cream') : badge('Off', 'bg-sand text-slate');
+          tr.innerHTML =
+            '<td class="px-6 py-3 font-medium">' + esc(w.name) + '</td>' +
+            '<td class="px-6 py-3 text-slate">' + (esc(w.role) || '—') + '</td>' +
+            '<td class="px-6 py-3">' + shiftBadge + '</td>' +
+            '<td class="px-6 py-3 text-right"><button data-id="' + w.id + '" class="del text-slate hover:text-ink" aria-label="Delete">&times;</button></td>';
+          body.appendChild(tr);
+        });
+        updateSummary();
+      }
+
+      function updateSummary() {
+        const machOn = machines.filter((m) => m.status === 'on').length;
+        const machOff = machines.length - machOn;
+        const workersOn = workers.filter((w) => w.shift === 'on').length;
+        document.getElementById('opsMachOn').firstChild.nodeValue = String(machOn);
+        document.getElementById('opsMachTotal').textContent = ' / ' + machines.length;
+        document.getElementById('opsMachOff').textContent = String(machOff);
+        document.getElementById('opsWorkersOn').firstChild.nodeValue = String(workersOn);
+        document.getElementById('opsWorkersTotal').textContent = ' / ' + workers.length;
+        if (machines.length) {
+          const avg = machines.reduce((s, m) => s + perfScore[m.perf], 0) / machines.length;
+          const label = avg >= 2.5 ? 'Best' : avg >= 1.5 ? 'Good' : 'Low';
+          document.getElementById('opsAvgPerf').textContent = label;
+        } else {
+          document.getElementById('opsAvgPerf').textContent = '—';
+        }
+      }
+
+      document.getElementById('machForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        machines.push({
+          id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+          name: document.getElementById('machName').value.trim(),
+          status: document.getElementById('machStatus').value,
+          perf: document.getElementById('machPerf').value,
+        });
+        saveM(); renderMachines(); e.target.reset();
+      });
+      document.getElementById('machBody').addEventListener('click', (e) => {
+        const btn = e.target.closest('.del'); if (!btn) return;
+        machines = machines.filter((m) => m.id !== btn.dataset.id); saveM(); renderMachines();
+      });
+      document.getElementById('clearMach').addEventListener('click', () => {
+        if (machines.length && confirm('Clear all machines?')) { machines = []; saveM(); renderMachines(); }
+      });
+
+      document.getElementById('workerForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        workers.push({
+          id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+          name: document.getElementById('workerName').value.trim(),
+          role: document.getElementById('workerRole').value.trim(),
+          shift: document.getElementById('workerShift').value,
+        });
+        saveW(); renderWorkers(); e.target.reset();
+      });
+      document.getElementById('workerBody').addEventListener('click', (e) => {
+        const btn = e.target.closest('.del'); if (!btn) return;
+        workers = workers.filter((w) => w.id !== btn.dataset.id); saveW(); renderWorkers();
+      });
+      document.getElementById('clearWorkers').addEventListener('click', () => {
+        if (workers.length && confirm('Clear all workers?')) { workers = []; saveW(); renderWorkers(); }
+      });
+
+      renderMachines();
+      renderWorkers();
     })();
   </script>
 </body>
