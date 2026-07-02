@@ -1,2 +1,2 @@
-// Vercel project settings call this script before `next build`.
-// Keep it as a no-op so deployments can proceed when the v0 helper is absent.
+// Vercel v0 inject script - disabled for standard Next.js build
+// This file is no longer needed as we're using standard Next.js build process
